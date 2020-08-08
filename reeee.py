@@ -43,16 +43,16 @@ while (True):
         if(min_x <= centro_x <= max_x) & (min_y <= centro_y <= max_y):
             color = (0, 0, 255)
 
-        if centro_x > 340 :
+        while centro_x > 340 :
             print('mover a la derecha')
 
-        if centro_x < 300 :
+        while centro_x < 300 :
             print('mover a la izquiera')
 
-        if centro_y < 220 :
+        while centro_y < 220 :
             print('mover para abajo')
 
-        if centro_y > 260 :
+        while centro_y > 260 :
             print('mover para arriba')
 
         cv2.rectangle(frame, (x, y), (width, height), color, stroke)
