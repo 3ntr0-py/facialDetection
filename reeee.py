@@ -11,7 +11,7 @@ while (True):
     cv2.circle(frame, (320, 240), 5, (0, 0, 255))
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor = 1.5, minNeighbors = 4)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor = 1.5, minNeighbors = 3)
 
     for (x, y, w, h)in faces:
 
