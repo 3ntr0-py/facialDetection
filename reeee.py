@@ -1,9 +1,18 @@
 import numpy as np
+from nanpy import (ArduinoApi, SeriaManager)
+from time import sleep
 import cv2 as cv2
+
+servo0Pin = 3
+servo1Pin = 5
+
+//positions
+pos0 = 0
+pos1 = 0
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 while (True):
     ret, frame = cap.read()
@@ -13,7 +22,7 @@ while (True):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor = 1.5, minNeighbors = 3)
 
-    for (x, y, w, h)in faces:
+    for (x, y, w, h) in faces:
 
         coordenates = [x, y, w, h]
 
@@ -45,15 +54,19 @@ while (True):
 
         if centro_x > 340 :
             print('mover a la derecha')
+            //poner aqui movimiento a la derecha
 
         if centro_x < 300 :
-            print('mover a la izquiera')
+            print('mover a la izquierda')
+            //poner aqui movimiento a la izquierda
 
         if centro_y < 220 :
             print('mover para abajo')
+            //poner aqui movimiento hacia abajo
 
         if centro_y > 260 :
             print('mover para arriba')
+            //poner aqui movimiento hacia arriba
 
         cv2.rectangle(frame, (x, y), (width, height), color, stroke)
         cv2.circle(frame, (centro_x, centro_y), 5, (0, 0, 255))
