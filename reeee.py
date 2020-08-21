@@ -6,7 +6,7 @@ import cv2 as cv2
 servo0Pin = 3
 servo1Pin = 5
 
-//positions
+#positions
 pos0 = 0
 pos1 = 0
 
@@ -54,19 +54,19 @@ while (True):
 
         if centro_x > 340 :
             print('mover a la derecha')
-            //poner aqui movimiento a la derecha
+            #poner aqui movimiento a la derecha
 
         if centro_x < 300 :
             print('mover a la izquierda')
-            //poner aqui movimiento a la izquierda
+            #poner aqui movimiento a la izquierda
 
         if centro_y < 220 :
             print('mover para abajo')
-            //poner aqui movimiento hacia abajo
+            #poner aqui movimiento hacia abajo
 
         if centro_y > 260 :
             print('mover para arriba')
-            //poner aqui movimiento hacia arriba
+            #poner aqui movimiento hacia arriba
 
         cv2.rectangle(frame, (x, y), (width, height), color, stroke)
         cv2.circle(frame, (centro_x, centro_y), 5, (0, 0, 255))
