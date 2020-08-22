@@ -1,14 +1,19 @@
 import numpy as np
-from nanpy import (ArduinoApi, SeriaManager)
 from time import sleep
 import cv2 as cv2
+import serial
 
-servo0Pin = 3
-servo1Pin = 5
+ser = serial.Serial('/dev/ttyACM0')
 
-#positions
-pos0 = 0
-pos1 = 0
+#la O mayuscula ponla para que los servo no hagan nada
+toArduino = 'O'
+toArduinoEncode = toArduino.encode()
+
+arriba = False
+abajo = False
+izquierda = False
+derecha = False
+
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
 
@@ -54,19 +59,80 @@ while (True):
 
         if centro_x > 340 :
             print('mover a la derecha')
-            #poner aqui movimiento a la derecha
-
+            derecha = True
+        else: 
+            derecha = False
+            
         if centro_x < 300 :
             print('mover a la izquierda')
-            #poner aqui movimiento a la izquierda
+            izquierda = True
+        else: 
+            izquierda = False
 
         if centro_y < 220 :
             print('mover para abajo')
-            #poner aqui movimiento hacia abajo
-
+            abajo = True
+        else: 
+            abajo = False
+            
         if centro_y > 260 :
             print('mover para arriba')
-            #poner aqui movimiento hacia arriba
+            arriba = True
+        else: 
+            arriba = False
+
+        #convinados
+        if (arriba & izquierda):
+            print('sending A')
+            toArduino = 'A'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+            
+
+        if (arriba & derecha):
+            print('sending B')
+            toArduino = 'B'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+        
+        if (abajo & izquierda):
+            print('sending C')
+            toArduino = 'C'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+
+        if (abajo & derecha):
+            print('sending D')
+            toArduino = 'D'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+
+        #solo direcciones solas
+        if (arriba == True & izquierda == False & derecha == False & abajo == False):
+            print('sending W')
+            toArduino = 'W'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+
+        if (derecha == True & arriba == False & abajo == False & izquierda == False):
+            print('sending X')
+            toArduino = 'X'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+        
+        if (izquierda == True & arriba == False & derecha == False & abajo == False):
+            print('sending Y')
+            toArduino = 'Y'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+
+        if (abajo == True & arriba == False & izquierda == False & derecha == False):
+            print('sending Z')
+            toArduino = 'Z'
+            toArduinoEncode = toArduino.encode()
+            ser.write(toArduinoEncode)
+
+
 
         cv2.rectangle(frame, (x, y), (width, height), color, stroke)
         cv2.circle(frame, (centro_x, centro_y), 5, (0, 0, 255))
