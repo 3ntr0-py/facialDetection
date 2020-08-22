@@ -113,6 +113,8 @@ void loop() {
   }
 
   if(fromPi = 'O'){
-    
+    servo0.write(pos0)
+    servo1.write(pos1)
+    servo2.write(pos2)
   } 
 }
