@@ -3,11 +3,10 @@ from time import sleep
 import cv2 as cv2
 import serial
 
-ser = serial.Serial('/dev/ttyACM0')
+ser = serial.Serial('/dev/ttyACM0', 9600)
 
 #la O mayuscula ponla para que los servo no hagan nada
 toArduino = 'O'
-toArduinoEncode = toArduino.encode()
 
 arriba = False
 abajo = False

@@ -27,52 +27,68 @@ void loop() {
   if(fromPi = 'A'){
 
     pos0 -= 1
-    servo0.write(pos0)
+    servo0.write(pos0);
+
+    wait(10);
 
     pos1 += 1
-    servo1.write(pos1)
+    servo1.write(pos1);
+
+    wait(10);
 
     pos2 -= 1
-    servo2.write(pos2)
+    servo2.write(pos2);
 
   }
 
   if(fromPi = 'B'){
 
     pos0 += 1
-    servo0.write(pos0)
+    servo0.write(pos0);
+
+    wait(10);
 
     pos1 += 1
-    servo1.write(pos1)
+    servo1.write(pos1);
+
+    wait(10);
 
     pos2 -= 1
-    servo2.write(pos2)
+    servo2.write(pos2);
 
   }
 
   if(fromPi = 'C'){
 
     pos0 -= 1
-    servo0.write(pos0)
+    servo0.write(pos0);
+
+    wait(10);
 
     pos1 += 1
-    servo1.write(pos1)
+    servo1.write(pos1);
+
+    wait(10);
 
     pos2 -= 1
-    servo2.write(pos2)
+    servo2.write(pos2);
 
   }
 
   if(fromPi = 'D'){
 
     pos0 += 1
-    servo0.write(pos0)
+    servo0.write(pos0);
+
+    wait(10);
 
     pos1 += 1
-    servo1.write(pos1)
+    servo1.write(pos1);
+
+    wait(10);
 
     pos2 -= 1
-    servo2.write(pos2)
+    servo2.write(pos2);
 
   }
 
@@ -80,24 +96,24 @@ void loop() {
   if(fromPi = 'W'){
     
     pos1 += 1
-    servo1.write(pos1)
+    servo1.write(pos1);
 
     pos2 -= 1
-    servo2.write(pos2)
+    servo2.write(pos2);
 
   }
 
   if(fromPi = 'X'){
 
     pos0 -= 1
-    servo0.write(pos0)
+    servo0.write(pos0);
 
   }
 
   if(fromPi = 'Y'){
 
     pos0 += 1
-    servo0.write(pos0)
+    servo0.write(pos0);
 
   }
 
@@ -105,16 +121,18 @@ void loop() {
   if(fromPi = 'Z'){
     
     pos1 -= 1
-    servo1.write(pos1)
+    servo1.write(pos1);
+
+    wait(10);
 
     pos2 += 1
-    servo2.write(pos2)
+    servo2.write(pos2);
 
   }
 
   if(fromPi = 'O'){
-    servo0.write(pos0)
-    servo1.write(pos1)
-    servo2.write(pos2)
+    servo0.write(pos0);
+    servo1.write(pos1);
+    servo2.write(pos2);
   } 
 }
