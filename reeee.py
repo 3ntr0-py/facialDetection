@@ -1,18 +1,36 @@
 import numpy as np
 from time import sleep
+import time
 import cv2 as cv2
-import serial
+import RPi.GPIO as GPIO
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
+GPIO.setmode(GPIO.BOARD)
 
-#la O mayuscula ponla para que los servo no hagan nada
-toArduino = 'O'
+GPIO.setup(12, GPIO.OUT)
+GPIO.setup(32, GPIO.OUT)
+GPIO.setup(33, GPIO.OUT)
 
-arriba = False
-abajo = False
-izquierda = False
-derecha = False
+servo0 = GPIO.PWM(12, 50)
+servo1 = GPIO.PWM(32, 50)
+servo2 = GPIO.PWM(33, 50)
 
+servo0.start(0)
+servo1.start(0)
+servo2.start(0)
+
+pos0 = 0
+pos1 = 0
+pos2 = 0
+
+def setAngle(servo, angle):
+
+    duty = angle / 18 + 2
+    
+    servo.ChangeDutyCycle(duty)
+    
+    sleep(0.1)
+    
+    servo.ChangeDutyCycle(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
 
@@ -58,80 +76,48 @@ while (True):
 
         if centro_x > 340 :
             print('mover a la derecha')
-            derecha = True
-        else: 
-            derecha = False
+            if pos0 <= 360 & pos0 >= 0:
+                pos0 += 1
+                setAngle(servo0, pos0)        
+                sleep(0.5)
+            
+            
             
         if centro_x < 300 :
             print('mover a la izquierda')
-            izquierda = True
-        else: 
-            izquierda = False
+            if pos0 <= 360 & pos0 > 0:
+                pos0 -= 1
+                setAngle(servo0, pos0)
+                sleep(0.5)
+        
+
 
         if centro_y < 220 :
             print('mover para abajo')
-            abajo = True
-        else: 
-            abajo = False
+            if pos1 >= 0 & pos1 < 200:
+                pos1 += 1
+                setAngle(servo2, pos2)
+                sleep(0.25)
+                
+            if pos2 > 0 & pos2 < 200:
+                pos2 -= 1
+                setAngle(servo1, pos1)
+                sleep(0.25)
+            
+            
+            
             
         if centro_y > 260 :
             print('mover para arriba')
-            arriba = True
-        else: 
-            arriba = False
-
-        #convinados
-        if (arriba & izquierda):
-            print('sending A')
-            toArduino = 'A'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-            
-
-        if (arriba & derecha):
-            print('sending B')
-            toArduino = 'B'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-        
-        if (abajo & izquierda):
-            print('sending C')
-            toArduino = 'C'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-
-        if (abajo & derecha):
-            print('sending D')
-            toArduino = 'D'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-
-        #solo direcciones solas
-        if (arriba == True & izquierda == False & derecha == False & abajo == False):
-            print('sending W')
-            toArduino = 'W'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-
-        if (derecha == True & arriba == False & abajo == False & izquierda == False):
-            print('sending X')
-            toArduino = 'X'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-        
-        if (izquierda == True & arriba == False & derecha == False & abajo == False):
-            print('sending Y')
-            toArduino = 'Y'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-
-        if (abajo == True & arriba == False & izquierda == False & derecha == False):
-            print('sending Z')
-            toArduino = 'Z'
-            toArduinoEncode = toArduino.encode()
-            ser.write(toArduinoEncode)
-
-
+            if pos1 >= 0 & pos1 < 200:
+                pos1 -= 1
+                setAngle(servo2, pos2)
+                sleep(0.25)
+                
+            if pos2 > 0 & pos2 < 200:
+                pos2 += 1
+                setAngle(servo1, pos1)
+                sleep(0.25)
 
         cv2.rectangle(frame, (x, y), (width, height), color, stroke)
         cv2.circle(frame, (centro_x, centro_y), 5, (0, 0, 255))
@@ -140,6 +126,9 @@ while (True):
     cv2.imshow('REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', frame)
 
     if cv2.waitKey(20) & 0xFF == ord('f'):
+        servo0.stop()
+        servo1.stop()
+        servo2.stop()
         break
 
 cap.release()
