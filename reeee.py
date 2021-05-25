@@ -4,6 +4,11 @@ import time
 import cv2 as cv2
 import RPi.GPIO as GPIO
 
+arriba = False
+abajo = False
+izquierda = False
+derecha = False
+
 GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(12, GPIO.OUT)
@@ -76,39 +81,29 @@ while (True):
 
         if centro_x > 340 :
             print('mover a la derecha')
-            if pos0 <= 360 & pos0 >= 0:
-                pos0 += 1
-                setAngle(servo0, pos0)        
-                sleep(0.5)
-            
-            
+            derecha = True
+        else:
+            derecha = False
             
         if centro_x < 300 :
             print('mover a la izquierda')
-            if pos0 <= 360 & pos0 > 0:
-                pos0 -= 1
-                setAngle(servo0, pos0)
-                sleep(0.5)
-        
-
+            izquierda = True
+        else:
+            izquierda = False
 
         if centro_y < 220 :
-            print('mover para abajo')
-            if pos1 >= 0 & pos1 < 200:
-                pos1 += 1
-                setAngle(servo2, pos2)
-                sleep(0.25)
-                
-            if pos2 > 0 & pos2 < 200:
-                pos2 -= 1
-                setAngle(servo1, pos1)
-                sleep(0.25)
-            
-            
-            
+            print('mover para abajo') 
+            abajo = True
+        else:
+            abajo = False
             
         if centro_y > 260 :
             print('mover para arriba')
+            arriba = True
+        else:
+            arriba = False
+
+        while arriba == True :
             if pos1 >= 0 & pos1 < 200:
                 pos1 -= 1
                 setAngle(servo2, pos2)
@@ -118,6 +113,29 @@ while (True):
                 pos2 += 1
                 setAngle(servo1, pos1)
                 sleep(0.25)
+
+        while abajo == True :
+            if pos1 >= 0 & pos1 < 200:
+                pos1 += 1
+                setAngle(servo2, pos2)
+                sleep(0.25)
+                
+            if pos2 > 0 & pos2 < 200:
+                pos2 -= 1
+                setAngle(servo1, pos1)
+                sleep(0.25)
+
+        while izquierda == True :
+            if pos0 <= 360 & pos0 > 0:
+                pos0 -= 1
+                setAngle(servo0, pos0)
+                sleep(0.5)
+
+        while derecha == True :
+            if pos0 <= 360 & pos0 >= 0:
+                pos0 += 1
+                setAngle(servo0, pos0)        
+                sleep(0.5)
 
         cv2.rectangle(frame, (x, y), (width, height), color, stroke)
         cv2.circle(frame, (centro_x, centro_y), 5, (0, 0, 255))
@@ -129,6 +147,7 @@ while (True):
         servo0.stop()
         servo1.stop()
         servo2.stop()
+        GPIO.cleanup()
         break
 
 cap.release()
